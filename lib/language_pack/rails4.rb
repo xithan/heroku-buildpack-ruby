@@ -23,7 +23,6 @@ class LanguagePack::Rails4 < LanguagePack::Rails3
 
   def default_process_types
     instrument "rails4.default_process_types" do
-      rake.task('wagn:seed')
       super.merge({
         "web"     => "wagn server -p $PORT -e $RAILS_ENV",
         "console" => "wagn console"
@@ -70,35 +69,8 @@ WARNING
   def run_assets_precompile_rake_task
     return
     instrument "rails4.run_assets_precompile_rake_task" do
-      log("assets_precompile") do
-        if Dir.glob("public/assets/{.sprockets-manifest-*.json,manifest-*.json}", File::FNM_DOTMATCH).any?
-          puts "Detected manifest file, assuming assets were compiled locally"
-          return true
-        end
-
-        precompile = rake.task("assets:precompile")
-        return true unless precompile.is_defined?
-
-        topic("Preparing app for Rails asset pipeline")
-
-        @cache.load_without_overwrite public_assets_folder
-        @cache.load default_assets_cache
-
-        precompile.invoke(env: rake_env)
-
-        if precompile.success?
-          log "assets_precompile", :status => "success"
-          puts "Asset precompilation completed (#{"%.2f" % precompile.time}s)"
-
-          puts "Cleaning assets"
-          rake.task("assets:clean").invoke(env: rake_env)
-
-          cleanup_assets_cache
-          @cache.store public_assets_folder
-          @cache.store default_assets_cache
-        else
-          precompile_fail(precompile.output)
-        end
+      log("wagn:seed") do
+        rake.task('wagn:seed')
       end
     end
   end
