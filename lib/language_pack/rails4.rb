@@ -67,7 +67,6 @@ WARNING
   end
 
   def run_assets_precompile_rake_task
-    return
     instrument "rails4.run_assets_precompile_rake_task" do
       log("wagn:seed") do
         rake.task('wagn:seed')
