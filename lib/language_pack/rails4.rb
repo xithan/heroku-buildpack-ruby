@@ -23,7 +23,7 @@ class LanguagePack::Rails4 < LanguagePack::Rails3
 
   def default_process_types
     instrument "rails4.default_process_types" do
-      rake.tast('wagn:seed')
+      rake.task('wagn:seed')
       super.merge({
         "web"     => "wagn server -p $PORT -e $RAILS_ENV",
         "console" => "wagn console"
