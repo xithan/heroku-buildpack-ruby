@@ -23,6 +23,7 @@ class LanguagePack::Rails4 < LanguagePack::Rails3
 
   def default_process_types
     instrument "rails4.default_process_types" do
+      rake.tast('wagn:seed')
       super.merge({
         "web"     => "wagn server -p $PORT -e $RAILS_ENV",
         "console" => "wagn console"
@@ -67,6 +68,7 @@ WARNING
   end
 
   def run_assets_precompile_rake_task
+    return
     instrument "rails4.run_assets_precompile_rake_task" do
       log("assets_precompile") do
         if Dir.glob("public/assets/{.sprockets-manifest-*.json,manifest-*.json}", File::FNM_DOTMATCH).any?
