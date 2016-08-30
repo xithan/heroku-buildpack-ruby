@@ -101,7 +101,7 @@ WARNING
         post_bundler
         create_database_yml
         install_binaries
-        run_assets_precompile_rake_task
+        run_seed_rake_task
       end
       best_practice_warnings
       super
@@ -819,6 +819,21 @@ params = CGI.parse(uri.query || "")
         puts "Asset precompilation completed (#{"%.2f" % precompile.time}s)"
       else
         precompile_fail(precompile.output)
+      end
+    end
+  end
+
+  def run_seed_rake_task
+    instrument 'ruby.run_seed_rake_task' do
+      seed = rake.task("wagn:seed")
+      return true unless seed.is_defined?
+
+      topic "Seeding database"
+      seed.invoke(env: rake_env)
+      if seed.success?
+        puts "Database seeding completed (#{"%.2f" % seed.time}s)"
+      else
+        seed_fail(seed.output)
       end
     end
   end
