@@ -833,7 +833,8 @@ params = CGI.parse(uri.query || "")
       if seed.success?
         puts "Database seeding completed (#{"%.2f" % seed.time}s)"
       else
-        seed_fail(seed.output)
+        puts "Seed failed"
+        puts seed.output
       end
     end
   end
