@@ -25,7 +25,7 @@ class LanguagePack::Rails4 < LanguagePack::Rails3
     instrument "rails4.default_process_types" do
       super.merge({
         "seed"    => "bundle exec wagn seed",
-        "web"     => "wagn server -p $PORT -e $RAILS_ENV",
+        "web"     => "bundle exec wagn seed && bundle exec wagn server -p $PORT -e $RAILS_ENV",
         "console" => "wagn console"
       })
     end
