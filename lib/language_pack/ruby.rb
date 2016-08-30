@@ -825,7 +825,7 @@ params = CGI.parse(uri.query || "")
 
   def run_seed_rake_task
     instrument 'ruby.run_seed_rake_task' do
-      seed = rake.task("wagn:seed")
+      seed = rake.task("wagn:reseed")
       return true unless seed.is_defined?
 
       topic "Seeding database"
