@@ -101,7 +101,7 @@ WARNING
         post_bundler
         create_database_yml
         install_binaries
-        run_seed_rake_task
+        # run_seed_rake_task
       end
       best_practice_warnings
       super
